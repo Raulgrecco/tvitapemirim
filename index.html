@@ -43,7 +43,7 @@
 
   /* ---------------- header ---------------- */
   header{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 0;
-    background:linear-gradient(to bottom, rgba(22,14,10,.92), transparent);}
+    background:rgba(22,14,10,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(251,243,233,.08);}
   .nav{display:flex;align-items:center;justify-content:space-between;}
   .brand{display:flex;align-items:center;gap:12px;}
   .brand-name{font-family:'Instrument Serif',serif;font-size:20px;line-height:1;}
@@ -184,6 +184,23 @@
     scrollbar-width:none;}
   .reel-row::-webkit-scrollbar{display:none;}
   .media-card{flex:0 0 220px;scroll-snap-align:start;position:relative;}
+  .mc-play{position:absolute;top:0;left:0;right:0;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:opacity .2s ease, background .2s ease;background:rgba(0,0,0,0);border-radius:4px;}
+  .media-card:hover .mc-play{opacity:1;background:rgba(0,0,0,.35);}
+  .mc-play svg{width:46px;height:46px;fill:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));}
+
+  /* ---------- modal player (filmes / palco brasil) ---------- */
+  .watch-modal{position:fixed;inset:0;z-index:500;background:rgba(10,6,4,.94);display:none;
+    align-items:center;justify-content:center;padding:24px;}
+  .watch-modal.open{display:flex;}
+  .watch-box{width:100%;max-width:960px;}
+  .watch-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:4px;overflow:hidden;}
+  .watch-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+  .watch-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .watch-title{font-family:'Instrument Serif',serif;font-size:22px;color:var(--paper);}
+  .watch-close{background:none;border:1px solid rgba(251,243,233,.3);color:var(--paper);width:36px;height:36px;
+    border-radius:50%;font-size:18px;cursor:pointer;line-height:1;}
+  .watch-close:hover{border-color:var(--orange);}
   .thumb{aspect-ratio:2/3;border-radius:4px;position:relative;overflow:hidden;}
   .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.75), transparent 50%);}
   .badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--orange);color:#160E0A;
@@ -292,7 +309,7 @@
       </div>
       <div class="master-frame">
         <!-- exemplo/placeholder: trocar pelo VOD final com todos os patrocinadores em sequência -->
-        <iframe src="https://player.castr.com/vod/11VabkqVz7UwFxRo?autoplay=true&muted=true&mute=1&volume=0&loop=true&controls=false" allow="autoplay" loading="lazy"></iframe>
+        <iframe src="https://player.castr.com/vod/d3uhO7IfR2FxYu8s?autoplay=true&muted=true&mute=1&volume=0&loop=true&controls=false" allow="autoplay" loading="lazy"></iframe>
         <span class="loop-tag"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4z"/></svg>Loop contínuo</span>
         <span class="frame-tag">Vídeo master · patrocinadores TV Itapemirim</span>
       </div>
@@ -387,11 +404,11 @@
     <div class="reel-row-wrap rv">
       <button class="reel-arrow prev">&#8249;</button>
       <div class="reel-row">
-        <div class="media-card"><span class="badge">★ Ação</span><div class="thumb" style="background:linear-gradient(160deg,#2c2c2c,#0a0a0a);"></div><div class="mc-title">Expresso do Amanhã</div><div class="mc-meta">IMDb 7.8 · 2013</div></div>
-        <div class="media-card"><span class="badge">🏆 Indicação da redação</span><div class="thumb" style="background:linear-gradient(160deg,#3a2c1c,#0a0a0a);"></div><div class="mc-title">O Poder e a Lei</div><div class="mc-meta">IMDb 7.3 · 2011</div></div>
-        <div class="media-card"><span class="badge">🎞 Clássico moderno</span><div class="thumb" style="background:linear-gradient(160deg,#2c1c1c,#0a0a0a);"></div><div class="mc-title">O Lado Bom da Vida</div><div class="mc-meta">IMDb 7.7 · 2013</div></div>
-        <div class="media-card"><span class="badge">★ Premiado</span><div class="thumb" style="background:linear-gradient(160deg,#3a3020,#0a0a0a);"></div><div class="mc-title">Carol</div><div class="mc-meta">IMDb 7.2 · 2015</div></div>
-        <div class="media-card"><span class="badge">🎭 Drama premiado</span><div class="thumb" style="background:linear-gradient(160deg,#3a1c24,#0a0a0a);"></div><div class="mc-title">Grandes Olhos</div><div class="mc-meta">IMDb 7.0 · 2014</div></div>
+        <div class="media-card" onclick="openReelWatch('39sp73Zsp9o','Expresso do Amanhã')" style="cursor:pointer;"><span class="badge">★ Ação</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/39sp73Zsp9o/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Expresso do Amanhã</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">IMDb 7.8 · 2013</div></div>
+        <div class="media-card" onclick="openReelWatch('XZOOxqtD1-Q','O Poder e a Lei')" style="cursor:pointer;"><span class="badge">🏆 Indicação da redação</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/XZOOxqtD1-Q/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">O Poder e a Lei</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">IMDb 7.3 · 2011</div></div>
+        <div class="media-card" onclick="openReelWatch('ZB4SgYcWAkk','O Lado Bom da Vida')" style="cursor:pointer;"><span class="badge">🎞 Clássico moderno</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/ZB4SgYcWAkk/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">O Lado Bom da Vida</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">IMDb 7.7 · 2013</div></div>
+        <div class="media-card" onclick="openReelWatch('3Tv5_qkTjNg','Carol')" style="cursor:pointer;"><span class="badge">★ Premiado</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/3Tv5_qkTjNg/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Carol</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">IMDb 7.2 · 2015</div></div>
+        <div class="media-card" onclick="openReelWatch('dSLzeZDruY0','Grandes Olhos')" style="cursor:pointer;"><span class="badge">🎭 Drama premiado</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/dSLzeZDruY0/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Grandes Olhos</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">IMDb 7.0 · 2014</div></div>
       </div>
       <button class="reel-arrow next">&#8250;</button>
     </div>
@@ -409,11 +426,11 @@
     <div class="reel-row-wrap rv">
       <button class="reel-arrow prev">&#8249;</button>
       <div class="reel-row">
-        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#3a2418,#0a0a0a);"></div><div class="mc-title">IZA</div><div class="mc-meta">18:59</div></div>
-        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#241c1c,#0a0a0a);"></div><div class="mc-title">Glória Groove</div><div class="mc-meta">21:04</div></div>
-        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#2c2018,#0a0a0a);"></div><div class="mc-title">Tulipa Ruiz</div><div class="mc-meta">21:04</div></div>
-        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#1c241c,#0a0a0a);"></div><div class="mc-title">Giovani Cidreira</div><div class="mc-meta">21:15</div></div>
-        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#241c2c,#0a0a0a);"></div><div class="mc-title">Duquesa</div><div class="mc-meta">20:56</div></div>
+        <div class="media-card" onclick="openReelWatch('oakGqyUPK0c','IZA')" style="cursor:pointer;"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/oakGqyUPK0c/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">IZA</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">18:59</div></div>
+        <div class="media-card" onclick="openReelWatch('s3w6Qst7ee4','Glória Groove')" style="cursor:pointer;"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/s3w6Qst7ee4/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Glória Groove</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">21:04</div></div>
+        <div class="media-card" onclick="openReelWatch('VM5XRUqX9hI','Tulipa Ruiz')" style="cursor:pointer;"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/VM5XRUqX9hI/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Tulipa Ruiz</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">21:04</div></div>
+        <div class="media-card" onclick="openReelWatch('QpDPywMco50','Giovani Cidreira')" style="cursor:pointer;"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/QpDPywMco50/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Giovani Cidreira</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">21:15</div></div>
+        <div class="media-card" onclick="openReelWatch('X0yHGC0ChrI','Duquesa')" style="cursor:pointer;"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(to top, rgba(0,0,0,.7), transparent 50%), url(https://img.youtube.com/vi/X0yHGC0ChrI/hqdefault.jpg) center/cover no-repeat;"></div><div class="mc-title">Duquesa</div><div class="mc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="mc-meta">20:56</div></div>
       </div>
       <button class="reel-arrow next">&#8250;</button>
     </div>
@@ -465,6 +482,33 @@
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, {threshold:.15});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+</script>
+
+<!-- ================= MODAL DE VÍDEO (filmes / palco brasil) ================= -->
+<div class="watch-modal" id="watchModal">
+  <div class="watch-box">
+    <div class="watch-top">
+      <span class="watch-title" id="watchTitle"></span>
+      <button class="watch-close" onclick="closeReelWatch()">&times;</button>
+    </div>
+    <div class="watch-frame">
+      <iframe id="watchIframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openReelWatch(youtubeId, title){
+    document.getElementById('watchIframe').src = 'https://www.youtube.com/embed/' + youtubeId + '?autoplay=1';
+    document.getElementById('watchTitle').textContent = title;
+    document.getElementById('watchModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeReelWatch(){
+    document.getElementById('watchIframe').src = '';
+    document.getElementById('watchModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
 </script>
 
 </body>
