@@ -103,7 +103,7 @@
   .rv.in{opacity:1;transform:translateY(0);}
 
   /* ---------------- patrocinadores master ---------------- */
-  .sponsor{padding:120px 0 100px;background:var(--night-2);}
+  .sponsor{padding:64px 0 100px;background:var(--night-2);}
   .sponsor-head{text-align:center;max-width:640px;margin:0 auto 50px;}
   .sponsor-head h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,54px);line-height:1.05;}
   .sponsor-head p{margin-top:14px;color:var(--paper-dim);font-size:14.5px;}
@@ -117,6 +117,7 @@
   .master-frame{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;
     border:1px solid rgba(251,243,233,.15);box-shadow:0 30px 70px rgba(0,0,0,.5);background:#000;}
   .master-frame video{width:100%;height:100%;object-fit:cover;display:block;}
+  .master-frame iframe{width:100%;height:100%;border:none;display:block;pointer-events:none;}
   .master-frame .frame-tag{position:absolute;bottom:16px;left:16px;z-index:2;
     font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--paper-dim);
     background:rgba(0,0,0,.5);padding:6px 10px;border-radius:3px;}
@@ -149,7 +150,53 @@
   .c-card .n{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--orange);letter-spacing:.1em;}
   .c-card h3{font-family:'Instrument Serif',serif;font-size:24px;margin-top:30px;}
   @media (max-width:880px){ .grid-content{grid-template-columns:repeat(2,1fr);} }
-  @media (max-width:520px){ .grid-content{grid-template-columns:1fr;} }
+  /* ---------------- rede de canais ---------------- */
+  .rede{padding:110px 0 90px;}
+  .rede-head{max-width:640px;margin-bottom:44px;}
+  .rede-head h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,52px);line-height:1.05;}
+  .rede-head p{margin-top:12px;color:var(--paper-dim);font-size:14.5px;}
+  .rede-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--paper-dim);margin:34px 0 16px;}
+  .rede-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .rede-cards.small{grid-template-columns:repeat(5,1fr);}
+  .canal-card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;
+    background:var(--night-2);border:1px solid var(--line);border-radius:6px;padding:26px 14px 20px;transition:border-color .2s ease, background .2s ease;}
+  .canal-card:hover{border-color:var(--orange);}
+  .canal-card.active{border-color:var(--orange);background:rgba(242,129,29,.08);}
+  .tag-gratis{position:absolute;top:10px;right:10px;background:var(--coral);color:#fff;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:100px;font-weight:600;}
+  .canal-ico{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--paper);margin-bottom:6px;}
+  .canal-ico svg{width:20px;height:20px;fill:#160E0A;margin-left:2px;}
+  .canal-name{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;}
+  .canal-cap{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--paper-dim);}
+  .rede-foot{text-align:center;margin-top:50px;font-family:'Instrument Serif',serif;font-size:22px;}
+  .rede-foot em{font-style:normal;color:var(--orange);}
+  @media (max-width:880px){ .rede-cards{grid-template-columns:repeat(2,1fr);} .rede-cards.small{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------------- reel de conteúdo ---------------- */
+  .reel-sec{padding:90px 0;}
+  .reel-head{max-width:640px;margin-bottom:36px;}
+  .reel-head h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,50px);}
+  .reel-head p{margin-top:12px;color:var(--paper-dim);font-size:14.5px;max-width:560px;}
+  .reel-row-wrap{position:relative;}
+  .reel-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;
+    scrollbar-width:none;}
+  .reel-row::-webkit-scrollbar{display:none;}
+  .media-card{flex:0 0 220px;scroll-snap-align:start;position:relative;}
+  .thumb{aspect-ratio:2/3;border-radius:4px;position:relative;overflow:hidden;}
+  .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.75), transparent 50%);}
+  .badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--orange);color:#160E0A;
+    font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:4px 9px;border-radius:3px;}
+  .mc-title{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;margin-top:10px;}
+  .mc-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--paper-dim);margin-top:2px;}
+  .reel-arrow{position:absolute;top:38%;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);
+    border:1px solid var(--line);color:var(--paper);font-size:18px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;z-index:3;}
+  .reel-arrow.prev{left:-6px;}
+  .reel-arrow.next{right:-6px;}
+  @media (max-width:700px){ .reel-arrow{display:none;} }
 
   /* ---------------- microsséries ---------------- */
   .micro{padding:110px 0;background:var(--night-2);}
@@ -202,11 +249,11 @@
     </div>
     <nav class="links">
       <a href="#ao-vivo">Ao vivo</a>
-      <a href="#conteudo">Notícias</a>
-      <a href="#conteudo">Programas</a>
-      <a href="#micro">Microsséries</a>
-      <a href="#conteudo">Cultura</a>
-      <a href="#conteudo">Esporte</a>
+      <a href="#rede">Notícias</a>
+      <a href="#rede">Programas</a>
+      <a href="#rede">Microsséries</a>
+      <a href="#rede">Cultura</a>
+      <a href="#rede">Esporte</a>
       <a href="#sobre">Sobre</a>
     </nav>
     <a href="#ao-vivo" class="nav-cta"><span class="dot"></span> Ao vivo</a>
@@ -244,10 +291,8 @@
         <svg viewBox="0 0 10 14"><path d="M5 14 0 6h3.2V0h3.6v6H10z"/></svg>
       </div>
       <div class="master-frame">
-        <video autoplay muted loop playsinline poster="">
-          <!-- substitua pelo arquivo final com todos os patrocinadores em sequência -->
-          <source src="video-master-patrocinadores.mp4" type="video/mp4">
-        </video>
+        <!-- exemplo/placeholder: trocar pelo VOD final com todos os patrocinadores em sequência -->
+        <iframe src="https://player.castr.com/vod/11VabkqVz7UwFxRo?autoplay=true&muted=true&mute=1&volume=0&loop=true&controls=false" allow="autoplay" loading="lazy"></iframe>
         <span class="loop-tag"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4z"/></svg>Loop contínuo</span>
         <span class="frame-tag">Vídeo master · patrocinadores TV Itapemirim</span>
       </div>
@@ -271,41 +316,106 @@
 </section>
 
 <!-- ================= CONTEÚDO ================= -->
-<section class="content" id="conteudo">
+<section class="rede" id="rede">
   <div class="wrap">
-    <div class="content-head rv">
-      <div class="eyebrow">Conteúdo</div>
-      <h2>O que passa na TV Itapemirim.</h2>
+    <div class="rede-head rv">
+      <div class="eyebrow">Rede Itapemirim</div>
+      <h2>Assista grátis na TV Itapemirim.</h2>
+      <p>Acesse todos estes canais públicos e próprios sem custo. É só clicar e assistir!</p>
     </div>
-    <div class="grid-content rv">
-      <div class="c-card"><div class="n">///</div><h3>Notícias</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Itapemirim Acontece</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Entrevistas</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Cultura</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Esporte</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Serviços</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Microsséries</h3></div>
-      <div class="c-card"><div class="n">///</div><h3>Especiais</h3></div>
+
+    <div class="rede-label rv">Canais próprios</div>
+    <div class="rede-cards rv">
+      <a href="#ao-vivo" class="canal-card active">
+        <span class="tag-gratis">Grátis!</span>
+        <span class="canal-ico" style="background:linear-gradient(155deg,var(--gold),var(--orange) 45%,var(--coral) 75%,var(--magenta));">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="canal-name">TV Itapemirim</span>
+        <span class="canal-cap">Clique para assistir grátis</span>
+      </a>
+      <a href="#" class="canal-card">
+        <span class="tag-gratis">Grátis!</span>
+        <span class="canal-ico" style="background:#1c1c1c;color:#E85B93;">SC</span>
+        <span class="canal-name">TV Sul Capixaba</span>
+        <span class="canal-cap">Clique para assistir grátis</span>
+      </a>
+      <a href="#" class="canal-card">
+        <span class="tag-gratis">Grátis!</span>
+        <span class="canal-ico" style="background:#1c1c1c;color:#F2811D;">TM</span>
+        <span class="canal-name">TV Marataízes</span>
+        <span class="canal-cap">Clique para assistir grátis</span>
+      </a>
+      <a href="#" class="canal-card">
+        <span class="tag-gratis">Grátis!</span>
+        <span class="canal-ico" style="background:#1c1c1c;color:#F4C430;">TP</span>
+        <span class="canal-name">TV Piúma</span>
+        <span class="canal-cap">Clique para assistir grátis</span>
+      </a>
+    </div>
+
+    <div class="rede-label rv">Canais públicos / institucionais</div>
+    <div class="rede-cards small rv">
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">TB</span><span class="canal-name">TV Brasil</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CG</span><span class="canal-name">Canal Gov</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">TC</span><span class="canal-name">TV Câmara</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">TS</span><span class="canal-name">TV Senado</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CE</span><span class="canal-name">Canal Educação</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CS</span><span class="canal-name">Canal Saúde</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">TC</span><span class="canal-name">TV Cultura</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CN</span><span class="canal-name">TV Canção Nova</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">RV</span><span class="canal-name">RedeVida</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">PE</span><span class="canal-name">TV Pai Eterno</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">SE</span><span class="canal-name">SescTV</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">FM</span><span class="canal-name">Cultura FM</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CF</span><span class="canal-name">Cultura Fast</span><span class="canal-cap">Clique para assistir grátis</span></a>
+      <a href="#" class="canal-card"><span class="tag-gratis">Grátis!</span><span class="canal-ico" style="background:#1c1c1c;">CB</span><span class="canal-name">Cultura Brasil</span><span class="canal-cap">Clique para assistir grátis</span></a>
+    </div>
+
+    <p class="rede-foot rv">Todos os canais são <em>gratuitos!</em></p>
+  </div>
+</section>
+
+<!-- ================= GRANDES FILMES ================= -->
+<section class="reel-sec">
+  <div class="wrap">
+    <div class="reel-head rv">
+      <div class="eyebrow">Cinema</div>
+      <h2>Grandes filmes</h2>
+      <p>Uma seleção especial da rede com grandes clássicos, filmes premiados e histórias inesquecíveis do cinema.</p>
+    </div>
+    <div class="reel-row-wrap rv">
+      <button class="reel-arrow prev">&#8249;</button>
+      <div class="reel-row">
+        <div class="media-card"><span class="badge">★ Ação</span><div class="thumb" style="background:linear-gradient(160deg,#2c2c2c,#0a0a0a);"></div><div class="mc-title">Expresso do Amanhã</div><div class="mc-meta">IMDb 7.8 · 2013</div></div>
+        <div class="media-card"><span class="badge">🏆 Indicação da redação</span><div class="thumb" style="background:linear-gradient(160deg,#3a2c1c,#0a0a0a);"></div><div class="mc-title">O Poder e a Lei</div><div class="mc-meta">IMDb 7.3 · 2011</div></div>
+        <div class="media-card"><span class="badge">🎞 Clássico moderno</span><div class="thumb" style="background:linear-gradient(160deg,#2c1c1c,#0a0a0a);"></div><div class="mc-title">O Lado Bom da Vida</div><div class="mc-meta">IMDb 7.7 · 2013</div></div>
+        <div class="media-card"><span class="badge">★ Premiado</span><div class="thumb" style="background:linear-gradient(160deg,#3a3020,#0a0a0a);"></div><div class="mc-title">Carol</div><div class="mc-meta">IMDb 7.2 · 2015</div></div>
+        <div class="media-card"><span class="badge">🎭 Drama premiado</span><div class="thumb" style="background:linear-gradient(160deg,#3a1c24,#0a0a0a);"></div><div class="mc-title">Grandes Olhos</div><div class="mc-meta">IMDb 7.0 · 2014</div></div>
+      </div>
+      <button class="reel-arrow next">&#8250;</button>
     </div>
   </div>
 </section>
 
-<!-- ================= MICROSSÉRIES ================= -->
-<section class="micro" id="micro">
-  <div class="wrap micro-grid">
-    <div class="micro-copy rv">
-      <div class="eyebrow">Produções próprias</div>
-      <h2>Microsséries, curtas e documentários feitos aqui.</h2>
-      <p>A TV Itapemirim dá espaço para produções audiovisuais locais — ficção, documentário e programas especiais assinados pela própria região.</p>
-      <div class="micro-tags">
-        <span>Microsséries</span>
-        <span>Curtas</span>
-        <span>Documentários</span>
-        <span>Programas especiais</span>
-      </div>
+<!-- ================= PALCO BRASIL ================= -->
+<section class="reel-sec" style="border-top:1px solid var(--line);">
+  <div class="wrap">
+    <div class="reel-head rv">
+      <div class="eyebrow">Música</div>
+      <h2>Palco Brasil</h2>
+      <p>Grandes apresentações musicais selecionadas pela curadoria da rede. Performances intimistas, artistas consagrados e novos talentos da música brasileira.</p>
     </div>
-    <div class="micro-visual rv">
-      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="reel-row-wrap rv">
+      <button class="reel-arrow prev">&#8249;</button>
+      <div class="reel-row">
+        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#3a2418,#0a0a0a);"></div><div class="mc-title">IZA</div><div class="mc-meta">18:59</div></div>
+        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#241c1c,#0a0a0a);"></div><div class="mc-title">Glória Groove</div><div class="mc-meta">21:04</div></div>
+        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#2c2018,#0a0a0a);"></div><div class="mc-title">Tulipa Ruiz</div><div class="mc-meta">21:04</div></div>
+        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#1c241c,#0a0a0a);"></div><div class="mc-title">Giovani Cidreira</div><div class="mc-meta">21:15</div></div>
+        <div class="media-card"><span class="badge">Palco Brasil</span><div class="thumb" style="background:linear-gradient(160deg,#241c2c,#0a0a0a);"></div><div class="mc-title">Duquesa</div><div class="mc-meta">20:56</div></div>
+      </div>
+      <button class="reel-arrow next">&#8250;</button>
     </div>
   </div>
 </section>
@@ -330,8 +440,8 @@
       <div class="foot-brand">TV Itapemirim<span class="loc">Itapemirim — Espírito Santo</span></div>
       <div class="foot-links">
         <a href="#ao-vivo">Ao vivo</a>
-        <a href="#conteudo">Conteúdo</a>
-        <a href="#micro">Microsséries</a>
+        <a href="#rede">Conteúdo</a>
+        <a href="#rede">Microsséries</a>
         <a href="#">Institucional</a>
       </div>
     </div>
@@ -348,6 +458,13 @@
   livePlay.addEventListener('click', function(){
     liveFrame.innerHTML = '<iframe src="' + LIVE_EMBED_URL + '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
     liveSection.classList.add('playing');
+  });
+
+  // ---- setas dos carrosséis ----
+  document.querySelectorAll('.reel-row-wrap').forEach(function(wrap){
+    var row = wrap.querySelector('.reel-row');
+    wrap.querySelector('.prev').addEventListener('click', function(){ row.scrollBy({left:-460, behavior:'smooth'}); });
+    wrap.querySelector('.next').addEventListener('click', function(){ row.scrollBy({left:460, behavior:'smooth'}); });
   });
 
   // ---- reveal on scroll ----
