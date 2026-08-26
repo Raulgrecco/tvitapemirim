@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV Itapemirim — Ao Vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#160E0A;
+    --night-2:#1F140D;
+    --paper:#FBF3E9;
+    --paper-dim:rgba(251,243,233,.66);
+    --orange:#F2811D;
+    --coral:#E8483A;
+    --magenta:#D63C7A;
+    --gold:#F4C430;
+    --line:rgba(251,243,233,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--night);color:var(--paper);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--coral);color:#fff;}
+  .serif{font-family:'Instrument Serif',serif;}
+  .serif-i{font-family:'Instrument Serif',serif;font-style:italic;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:20px;height:1px;background:var(--gold);}
+
+  /* ---------------- logo mark ---------------- */
+  .mark{width:38px;height:38px;border-radius:10px;position:relative;flex-shrink:0;
+    background:linear-gradient(155deg, var(--gold), var(--orange) 45%, var(--coral) 75%, var(--magenta));
+    box-shadow:0 4px 18px rgba(232,72,58,.35);}
+  .mark svg{position:absolute;inset:0;margin:auto;width:56%;height:56%;fill:#160E0A;}
+
+  /* ---------------- header ---------------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 0;
+    background:linear-gradient(to bottom, rgba(22,14,10,.92), transparent);}
+  .nav{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-name{font-family:'Instrument Serif',serif;font-size:20px;line-height:1;}
+  .brand-name .sub{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--paper-dim);margin-top:2px;}
+  nav.links{display:flex;gap:28px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;}
+  nav.links a{color:var(--paper-dim);transition:color .2s ease;padding-bottom:2px;border-bottom:1px solid transparent;}
+  nav.links a:hover{color:var(--paper);border-color:var(--orange);}
+  .nav-cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--coral);color:#fff;padding:9px 16px;border-radius:2px;display:flex;align-items:center;gap:7px;}
+  .nav-cta .dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite;}
+  .menu-btn{display:none;background:none;border:none;color:var(--paper);font-size:22px;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+  @media (max-width:880px){
+    nav.links{display:none;}
+    .menu-btn{display:block;}
+  }
+
+  /* ---------------- live hero (grande) ---------------- */
+  .live{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+  .live-frame{position:absolute;inset:0;z-index:0;}
+  .live-frame iframe{width:100%;height:100%;border:none;}
+  .live-frame::after{content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 70% 15%, rgba(230,90,60,.25), transparent 55%),
+      linear-gradient(to top, rgba(22,14,10,1) 8%, rgba(22,14,10,.6) 45%, rgba(22,14,10,.18) 68%, rgba(22,14,10,.55) 100%);
+  }
+  .live.playing .live-frame::after{opacity:.35;}
+  .live-badge{position:absolute;top:96px;left:24px;z-index:3;display:flex;align-items:center;gap:8px;
+    background:var(--coral);color:#fff;padding:8px 14px;border-radius:100px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;}
+  .live-badge .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite;}
+  .live-body{position:relative;z-index:2;padding:0 24px 64px;max-width:900px;}
+  .live-body h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,10vw,132px);line-height:.88;color:var(--paper);}
+  .live-body h1 em{font-style:italic;background:linear-gradient(100deg, var(--gold), var(--orange) 55%, var(--coral));
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .live-sub{margin-top:20px;font-size:15px;color:var(--paper-dim);max-width:520px;line-height:1.6;}
+  .live-actions{display:flex;align-items:center;gap:18px;margin-top:34px;flex-wrap:wrap;}
+  .play-btn{width:66px;height:66px;border-radius:50%;background:rgba(251,243,233,.08);
+    border:1.5px solid rgba(251,243,233,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;
+    transition:transform .2s ease, background .2s ease, border-color .2s ease;flex-shrink:0;}
+  .play-btn svg{width:22px;height:22px;fill:var(--paper);margin-left:3px;}
+  .live:hover .play-btn{transform:scale(1.08);background:var(--coral);border-color:var(--coral);}
+  .play-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);}
+  .live.playing .live-body{opacity:0;pointer-events:none;transition:opacity .3s ease;}
+  .live-note{position:absolute;bottom:22px;right:24px;z-index:3;font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:.08em;color:rgba(251,243,233,.4);text-align:right;max-width:260px;}
+
+  @media (max-width:700px){
+    .live-badge{top:78px;}
+    .live-body{padding-bottom:44px;}
+  }
+
+  /* ---------------- section shell ---------------- */
+  section{position:relative;}
+  .rv{opacity:0;transform:translateY(20px);transition:opacity .8s ease, transform .8s ease;}
+  .rv.in{opacity:1;transform:translateY(0);}
+
+  /* ---------------- patrocinadores master ---------------- */
+  .sponsor{padding:120px 0 100px;background:var(--night-2);}
+  .sponsor-head{text-align:center;max-width:640px;margin:0 auto 50px;}
+  .sponsor-head h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,54px);line-height:1.05;}
+  .sponsor-head p{margin-top:14px;color:var(--paper-dim);font-size:14.5px;}
+
+  .master-wrap{position:relative;max-width:900px;margin:0 auto;}
+  .point{position:absolute;top:-58px;left:50%;transform:translateX(-40%);text-align:center;z-index:2;}
+  .point .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold);background:rgba(244,196,48,.1);border:1px solid rgba(244,196,48,.4);padding:8px 16px;border-radius:100px;}
+  .point svg{display:block;margin:6px auto 0;width:16px;height:22px;fill:var(--gold);}
+
+  .master-frame{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;
+    border:1px solid rgba(251,243,233,.15);box-shadow:0 30px 70px rgba(0,0,0,.5);background:#000;}
+  .master-frame video{width:100%;height:100%;object-fit:cover;display:block;}
+  .master-frame .frame-tag{position:absolute;bottom:16px;left:16px;z-index:2;
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--paper-dim);
+    background:rgba(0,0,0,.5);padding:6px 10px;border-radius:3px;}
+  .master-frame .loop-tag{position:absolute;top:16px;right:16px;z-index:2;display:flex;align-items:center;gap:6px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--paper-dim);
+    background:rgba(0,0,0,.5);padding:6px 10px;border-radius:3px;}
+  .loop-tag svg{width:11px;height:11px;fill:var(--gold);animation:spin 3s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .logos-row{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);max-width:900px;margin-left:auto;margin-right:auto;}
+  .logo-slot{background:var(--night-2);padding:34px 20px;text-align:center;}
+  .logo-slot .brandname{font-family:'Instrument Serif',serif;font-size:24px;}
+  .logo-slot.filled .brandname{color:var(--paper);}
+  .logo-slot.empty{border:1px dashed rgba(251,243,233,.2);}
+  .logo-slot.empty .brandname{color:rgba(251,243,233,.35);}
+  .logo-slot .cap{margin-top:6px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--paper-dim);}
+  .logo-slot.filled .cap{color:var(--gold);}
+  @media (max-width:700px){ .logos-row{grid-template-columns:1fr;} .point{left:50%;transform:translateX(-50%);top:-46px;} }
+
+  /* ---------------- conteúdo ---------------- */
+  .content{padding:110px 0;}
+  .content-head{max-width:640px;margin-bottom:50px;}
+  .content-head h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,52px);line-height:1.05;}
+  .grid-content{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:1px solid var(--line);}
+  .c-card{background:var(--night);padding:26px 22px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;
+    transition:background .2s ease;}
+  .c-card:hover{background:var(--night-2);}
+  .c-card .n{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--orange);letter-spacing:.1em;}
+  .c-card h3{font-family:'Instrument Serif',serif;font-size:24px;margin-top:30px;}
+  @media (max-width:880px){ .grid-content{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .grid-content{grid-template-columns:1fr;} }
+
+  /* ---------------- microsséries ---------------- */
+  .micro{padding:110px 0;background:var(--night-2);}
+  .micro-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;}
+  .micro-copy h2{font-family:'Instrument Serif',serif;font-size:clamp(30px,4.6vw,46px);line-height:1.08;}
+  .micro-copy p{margin-top:18px;color:var(--paper-dim);font-size:15px;line-height:1.7;max-width:460px;}
+  .micro-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .micro-tags span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);padding:7px 13px;border-radius:100px;color:var(--paper-dim);}
+  .micro-visual{aspect-ratio:4/5;border-radius:6px;position:relative;overflow:hidden;
+    background:linear-gradient(155deg, var(--night), var(--night-2) 60%);border:1px solid var(--line);}
+  .micro-visual::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(242,129,29,.25), transparent 55%),
+               radial-gradient(circle at 75% 80%, rgba(214,60,122,.25), transparent 55%);}
+  .micro-visual .play{position:absolute;inset:0;margin:auto;width:58px;height:58px;border-radius:50%;
+    background:rgba(251,243,233,.08);border:1.5px solid rgba(251,243,233,.3);display:flex;align-items:center;justify-content:center;}
+  .micro-visual .play svg{width:18px;height:18px;fill:var(--paper);margin-left:2px;}
+  @media (max-width:880px){ .micro-grid{grid-template-columns:1fr;gap:36px;} .micro-visual{order:-1;} }
+
+  /* ---------------- redes ---------------- */
+  .social{padding:90px 0;text-align:center;}
+  .social h2{font-family:'Instrument Serif',serif;font-size:clamp(28px,4.6vw,42px);}
+  .social-row{display:flex;justify-content:center;gap:16px;margin-top:34px;flex-wrap:wrap;}
+  .social-row a{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);padding:12px 22px;border-radius:100px;transition:border-color .2s ease, color .2s ease;color:var(--paper-dim);}
+  .social-row a:hover{border-color:var(--orange);color:var(--paper);}
+
+  /* ---------------- footer ---------------- */
+  footer{border-top:1px solid var(--line);padding:44px 0 30px;}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:flex-start;}
+  .foot-brand{font-family:'Instrument Serif',serif;font-size:22px;}
+  .foot-brand .loc{display:block;margin-top:6px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);}
+  .foot-links{display:flex;gap:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--paper-dim);flex-wrap:wrap;}
+  .foot-links a:hover{color:var(--paper);}
+  .foot-bottom{margin-top:34px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(251,243,233,.3);
+    letter-spacing:.06em;}
+
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">
+      <div class="mark"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="brand-name">TV Itapemirim<span class="sub">Ao vivo · Sul do ES</span></div>
+    </div>
+    <nav class="links">
+      <a href="#ao-vivo">Ao vivo</a>
+      <a href="#conteudo">Notícias</a>
+      <a href="#conteudo">Programas</a>
+      <a href="#micro">Microsséries</a>
+      <a href="#conteudo">Cultura</a>
+      <a href="#conteudo">Esporte</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+    <a href="#ao-vivo" class="nav-cta"><span class="dot"></span> Ao vivo</a>
+    <button class="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<!-- ================= AO VIVO (grande) ================= -->
+<section class="live" id="ao-vivo">
+  <div class="live-frame" id="liveFrame"></div>
+  <div class="live-badge"><span class="dot"></span> AO VIVO</div>
+  <div class="live-body">
+    <h1>TV<br><em>Itapemirim</em></h1>
+    <p class="live-sub">Sinal digital ao vivo de Itapemirim — jornalismo, prestação de serviço, entrevistas, cultura, esporte e produções audiovisuais locais.</p>
+    <div class="live-actions" id="livePlay">
+      <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <span class="play-label">Clique para assistir ao vivo</span>
+    </div>
+  </div>
+  <div class="live-note">Transmissão contínua · disponível também nas redes sociais da TV Itapemirim</div>
+</section>
+
+<!-- ================= PATROCINADORES MASTER ================= -->
+<section class="sponsor" id="patrocinadores">
+  <div class="wrap">
+    <div class="sponsor-head rv">
+      <div class="eyebrow" style="justify-content:center;">Patrocinadores master</div>
+      <h2>Assista aqui aos nossos patrocinadores master.</h2>
+      <p>Um único vídeo, produzido especialmente para a TV Itapemirim, apresentando as marcas que apoiam a nossa transmissão.</p>
+    </div>
+
+    <div class="master-wrap rv">
+      <div class="point">
+        <span class="tag">Sua marca aqui</span>
+        <svg viewBox="0 0 10 14"><path d="M5 14 0 6h3.2V0h3.6v6H10z"/></svg>
+      </div>
+      <div class="master-frame">
+        <video autoplay muted loop playsinline poster="">
+          <!-- substitua pelo arquivo final com todos os patrocinadores em sequência -->
+          <source src="video-master-patrocinadores.mp4" type="video/mp4">
+        </video>
+        <span class="loop-tag"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4z"/></svg>Loop contínuo</span>
+        <span class="frame-tag">Vídeo master · patrocinadores TV Itapemirim</span>
+      </div>
+    </div>
+
+    <div class="logos-row rv">
+      <div class="logo-slot filled">
+        <div class="brandname">Juliana Móveis</div>
+        <div class="cap">Patrocinadora master</div>
+      </div>
+      <div class="logo-slot empty">
+        <div class="brandname">Sua marca</div>
+        <div class="cap">Espaço disponível</div>
+      </div>
+      <div class="logo-slot empty">
+        <div class="brandname">Sua marca</div>
+        <div class="cap">Espaço disponível</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTEÚDO ================= -->
+<section class="content" id="conteudo">
+  <div class="wrap">
+    <div class="content-head rv">
+      <div class="eyebrow">Conteúdo</div>
+      <h2>O que passa na TV Itapemirim.</h2>
+    </div>
+    <div class="grid-content rv">
+      <div class="c-card"><div class="n">///</div><h3>Notícias</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Itapemirim Acontece</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Entrevistas</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Cultura</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Esporte</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Serviços</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Microsséries</h3></div>
+      <div class="c-card"><div class="n">///</div><h3>Especiais</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MICROSSÉRIES ================= -->
+<section class="micro" id="micro">
+  <div class="wrap micro-grid">
+    <div class="micro-copy rv">
+      <div class="eyebrow">Produções próprias</div>
+      <h2>Microsséries, curtas e documentários feitos aqui.</h2>
+      <p>A TV Itapemirim dá espaço para produções audiovisuais locais — ficção, documentário e programas especiais assinados pela própria região.</p>
+      <div class="micro-tags">
+        <span>Microsséries</span>
+        <span>Curtas</span>
+        <span>Documentários</span>
+        <span>Programas especiais</span>
+      </div>
+    </div>
+    <div class="micro-visual rv">
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REDES ================= -->
+<section class="social">
+  <div class="wrap rv">
+    <h2>Acompanhe em todas as plataformas.</h2>
+    <div class="social-row">
+      <a href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="#" target="_blank" rel="noopener">YouTube</a>
+      <a href="#" target="_blank" rel="noopener">TikTok</a>
+      <a href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">TV Itapemirim<span class="loc">Itapemirim — Espírito Santo</span></div>
+      <div class="foot-links">
+        <a href="#ao-vivo">Ao vivo</a>
+        <a href="#conteudo">Conteúdo</a>
+        <a href="#micro">Microsséries</a>
+        <a href="#">Institucional</a>
+      </div>
+    </div>
+    <div class="foot-bottom">© TV ITAPEMIRIM — TODOS OS DIREITOS RESERVADOS.</div>
+  </div>
+</footer>
+
+<script>
+  // ---- player Ao Vivo: mesma lógica de embed usada na TV Sul Capixaba ----
+  var LIVE_EMBED_URL = "https://player.castr.com/live_SEU_ID_AQUI"; // trocar pelo embed real da TV Itapemirim
+  var liveSection = document.querySelector('.live');
+  var liveFrame = document.getElementById('liveFrame');
+  var livePlay = document.getElementById('livePlay');
+  livePlay.addEventListener('click', function(){
+    liveFrame.innerHTML = '<iframe src="' + LIVE_EMBED_URL + '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+    liveSection.classList.add('playing');
+  });
+
+  // ---- reveal on scroll ----
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+</script>
+
+</body>
+</html>
